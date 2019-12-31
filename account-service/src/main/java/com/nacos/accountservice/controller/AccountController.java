@@ -2,8 +2,9 @@ package com.nacos.accountservice.controller;
 
 import com.nacos.accountservice.pojo.Balance;
 import com.nacos.accountservice.pojo.User;
-import com.nacos.accountservice.service.BalanceService;
+import com.nacos.accountservice.service.IBalanceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +21,9 @@ import java.util.Map;
 @RestController
 public class AccountController {
 
+    @Autowired
+    private  IBalanceService balanceService;
+
     @Value("${sleep:0}")
     private String sleep;
 
@@ -28,6 +32,7 @@ public class AccountController {
         put(2,new User(2,"李四"));
         put(3,new User(3,"王五"));
     }};
+
 
     @RequestMapping("/acc/user")
     public User getUser(@RequestParam Integer id){
@@ -42,6 +47,8 @@ public class AccountController {
         }
         if(id != null && userMap.containsKey(id)){
             User user = userMap.get(id);
+            Balance balance = balanceService.getBalance(id);
+            user.setBalance(balance);
             return user;
         }
         return new User(0,"");
