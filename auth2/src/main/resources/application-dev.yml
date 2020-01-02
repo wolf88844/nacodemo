@@ -1,0 +1,56 @@
+server:
+  port: 9099
+spring:
+  application:
+    name: auth-demo
+  redis:
+    database: 0
+    host: 39.107.101.52
+    port: 6379
+    password:
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/auth2?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
+    username: root
+    password: root
+  druid:
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 from DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: false
+    maxPoolPreparedStatementPerConnectionSize: 20
+    filters: stat,wall,log4j
+    connectionProperties: 'druid.stat.mergeSql=true;slowSqlMillis=5000'
+
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://localhost:9901/eureka/
+
+
+mybatis:
+  type-aliases-package: com.example.auth2.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    jdbc-type-for-null: NULL
+    lazy-loading-enabled: true
+    cache-enabled: true
+    call-setters-on-nulls: true
+  mapper-locations:
+    - classpath:mybatis/*.xml
