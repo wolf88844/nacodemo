@@ -1,0 +1,48 @@
+spring:
+  profiles:
+    active: dev
+  flyway:
+    enabled: false
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      pool-name: shufa-data-pool
+      connection-timeout: 30000
+      minimum-idle: 5
+      maximum-pool-size: 10
+      idle-timeout: 180000
+      max-lifetime: 1800000
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQLDialect
+  redis:
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: -1
+        min-idle: 0
+  cloud:
+    nacos:
+      server-addr: localhost:8848
+      config:
+        server-addr: ${spring.cloud.nacos.server-addr}
+        namespace: 536c7bc1-43a2-4cde-aa84-d2f1ae5aad73
+        group: DEFAULT_GROUP
+        file-extension: yml
+        prefix: SFCOURSE
+      discovery:
+        namespace: 536c7bc1-43a2-4cde-aa84-d2f1ae5aad73
+  application:
+    name: SFCOURSE
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: '*'
+#      base-path: /sfactuator
+#  endpoint:
+#    health:
+#      show-details: always

@@ -1,0 +1,29 @@
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: nacos-getway-privider
+          uri: lb://SFCOURSE
+          predicates:
+            - Path=/course/**
+          filters:
+            - StripPrefix=1
+    nacos:
+      discovery:
+        namespace: 536c7bc1-43a2-4cde-aa84-d2f1ae5aad73
+      server-addr: localhost:8848
+      config:
+        prefix: GATEWAY
+        server-addr: ${spring.cloud.nacos.server-addr}
+        file-extension: yml
+        group: DEFAULT_GROUP
+        namespace: 536c7bc1-43a2-4cde-aa84-d2f1ae5aad73
+  application:
+    name: GATEWAY
+  profiles:
+    active: dev
+
